@@ -1,0 +1,72 @@
+//next thing is to modify text and add it to an array
+//I want to kind of make a mess of the image with splashes of specified colors,
+//and have the text grow over time as it is displayed
+PImage img;
+PFont font;
+color pastyel = #fdfd96; //main color for text
+char[] = 
+
+import org.multiply.processing.TimedEventGenerator;
+ 
+private TimedEventGenerator wordsTimedEventGenerator;
+
+private int lastMillis = 0;
+
+void setup() {
+  size(1920, 1080);
+  font = createFont("SedgwickAveDisplay-Regular.ttf", 60);
+  textFont(font);
+  textAlign(CENTER, CENTER); //centers the text
+  img = loadImage("bumblebill.jpg");
+  
+  wordsTimedEventGenerator = new TimedEventGenerator(this);
+  wordsTimedEventGenerator.setIntervalMs(500);
+  
+  //smooth();
+}
+
+void draw() {
+  //background(135, 206, 235); //added so background is consistent
+  image(img, 0, 0);
+  fill(pastyel);
+  text("this is the beginning", width/2, height/2); //displays the text
+}
+
+void mouseClicked() { //changes the color of the text when clicked 
+ if (mouseX > width/2) { //on different halves of screen
+   pastyel = 0;
+ } else {
+   pastyel = #fdfd96;
+ }
+}
+
+void keyReleased() {
+  if (key == UP) {
+    // Turn the ellipseTimedEventGenerator on and off.
+    wordsTimedEventGenerator.setEnabled(
+        !wordsTimedEventGenerator.isEnabled());
+  } else if (key == DOWN) {
+    // Set a new interval randomly selected between 400 and 2000 milliseconds.
+    wordsTimedEventGenerator.setIntervalMs((int) random(400, 2000));
+}
+}
+ 
+void setRandomFillAndStroke() {
+  stroke(pastyel);
+  fill(pastyel);
+  //strokeWeight(random(13));
+}
+ 
+void onTimerEvent() {
+  int millisDiff = millis() - lastMillis;
+  lastMillis = millisDiff + lastMillis;  
+  System.out.println("Got a timer event at " + millis() + "ms (" + millisDiff + ")!");
+  setRandomFillAndStroke();
+  ellipse(random(width), random(height), random(100), random(100));
+}
+ 
+//void onRectangleTimerEvent() {
+//  System.out.println("Got a rectangle timer event!");
+//  setRandomFillAndStroke();
+//  rect(random(width), random(height), random(100), random(100));
+//}
