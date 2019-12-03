@@ -1,5 +1,6 @@
 PFont mtaStyle;
 String[] FARE = {"F", "A", "R", "E"}; //a string array that includes letters of "FARE"
+String txt;
 color blu = #0039A6; //mta color for A and E express lines
 color yellow = #FCCC0A; //mta color for F and R express lines
 float angle = 0;
@@ -9,12 +10,15 @@ mtaLines R = new mtaLines();
 mtaLines E = new mtaLines();
 int posx;
 int posy;
+float y = 0;
 
 void setup() {
   size(1000, 1000); 
   background(0);
   smooth();
   mtaStyle = createFont("Helvetica", 60); //mta preferred font
+  String[] lines = loadStrings("F.txt");
+  txt = join(lines, "\n");
 }
 
 void draw() {
@@ -22,7 +26,10 @@ void draw() {
   textAlign(CENTER, CENTER);
   background(0);
 
-
+  fill(255);
+  text(txt, 0, 1000-y, width, height);
+  y++;
+  
   pushMatrix();
   fill(255);
   rect(posx, 400, 200, 200);
@@ -35,27 +42,29 @@ void draw() {
   if (posx > 450) {
     A.yellowCircle1();
   }
-  if (posx > 600) {
+  if (posx > 700) {
     R.blueCircle2();
   }
-  if (posx > 850) {
+  if (posx > 950) {
     E.yellowCircle2();
   }
 
   if (360 > angle) {
     angle = 0;
   }
+  
+  mouseClicked();
 }
 
 class mtaLines { //class for all ellipses
-  int wid = 100;
-  int hei = 100;
-  float y = sin(radians(angle)) * height/2;
+  int wid = 100; //width size
+  int hei = 100; //height size
+  float y = sin(radians(angle)) * height/2; //trying to implement oscillation
 
-  void blueCircle1() {
+  void blueCircle1() { //method for one of the mta line's cirlce
     pushMatrix();
     noStroke();
-    fill(blu);
+    fill(blu); //fill alpha
     ellipse(100, height/2, wid, hei);
     popMatrix();
   }
@@ -85,9 +94,10 @@ class mtaLines { //class for all ellipses
   }
 }
 
-void mouseClicked() {
+void mouseClicked() { //mouse event to show letters for the word "FARE"
   int value = 0;
-  if (value == 0) {
+  if (value == 0) { //This is always true, which means that something will take place when the mouse is clicked
+    fill(255);
     text(FARE[0], 100, height/2);
     fill(0);
     text(FARE[1], 350, height/2);
@@ -95,7 +105,5 @@ void mouseClicked() {
     text(FARE[2], 600, height/2);
     fill(0);
     text(FARE[3], 850, height/2);
-  } else {
-    F.blueCircle1();
-  }
+  } 
 }
