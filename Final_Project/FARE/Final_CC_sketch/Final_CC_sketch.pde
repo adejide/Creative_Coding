@@ -5,6 +5,7 @@ SoundFile rTrain;
 SoundFile eTrain;
 
 PImage img;
+PImage bg;
 
 PFont mtaStyle;
 String[] FARE = {"F", "A", "R", "E"}; //a string array that includes letters of "FARE"
@@ -22,17 +23,17 @@ mtaLines E = new mtaLines();
 int posx;
 int posy;
 float y = 0;
-boolean grow = true;
-int diam1 = 100; //width size
+int diam1 = 100; //width and height size
 int diam2 = 100;
 int diam3 = 100;
 int diam4 = 100;
 int i = 0;
 
 void setup() {
-  size(1000, 1000); 
+  size(1000, 998);//background needed to be the same as image to have the bg 
   background(0);
   smooth();
+  bg = loadImage("mta-cops.v1.cropped.jpg");
   img = loadImage("mta.jpg");
   mtaStyle = createFont("Helvetica", 60); //mta preferred font
   String[] lines = loadStrings("F.txt"); //from: https://www.nbcnewyork.com/news/local/Group-Uses-Sneaky-Advertising-to-Fight-MTAs-Fare-Beating-Crackdown-561292841.html
@@ -44,20 +45,24 @@ void setup() {
   txt_3 = join(lines_3, "\n");
   txt_4 = join(lines_3, "\n");
   fTrain = new SoundFile(this, "f2ndav.wav");
+  fTrain.amp(0.2); // adjusts the volume
   aTrain = new SoundFile(this, "aat342.wav");
-  rTrain = new SoundFile(this, "ratqueensplaza.wav");
-  eTrain = new SoundFile(this, "fast23ely.wav");
+  aTrain.amp(0.1);
+  //rTrain = new SoundFile(this, "ratqueensplaza.wav");
+  //rTrain.amp(0.1);
+  //eTrain = new SoundFile(this, "fast23ely.wav");
+  //eTrain.amp(0.1);
   fTrain.loop();
   aTrain.loop();
-  rTrain.loop();
-  eTrain.loop();
+  //rTrain.loop();
+  //eTrain.loop();
   y = height;
 }
 
 void draw() {
   textFont(mtaStyle);
   textAlign(CENTER, CENTER);
-  background(0);
+  background(bg);
 
   pushMatrix();
   fill(255);
@@ -86,11 +91,11 @@ void draw() {
   mouseClicked();
   
   pushMatrix();
-  if (keyPressed) {
+  if (keyPressed) { //increases the size of the circles and triggers text
     if (key == 'f') {
       diam1++;
       fill(255);
-      text(txt, 0, y, width, height*3.5);
+      text(txt, 0, y, width, height*3.5); //the first text file will show
       y--;
     }
 
@@ -160,7 +165,7 @@ class mtaLines { //class for all ellipses
 
 void mouseClicked() { //mouse event to show letters for the word "FARE"
   int value = 0;
-  if (value == 0) { //This is always true, which means that something will take place when the mouse is clicked
+  if (value == 0) { //This is always true, which means that letters will show when the mouse is clicked or not
     fill(255);
     text(FARE[0], 100, height/2);
     fill(255);
